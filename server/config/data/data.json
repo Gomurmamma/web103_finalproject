@@ -1,0 +1,37 @@
+[
+    {
+        "artistID": 1,
+        "artistname": "Taylor Swift",
+        "genre": "Pop",
+        "location": "Nashville, TN",
+        "imageURL": "https://tinyurl.com/bdzy2tjp"
+    },
+    {
+        "artistID": 2,
+        "artistname": "Kendrick Lamar",
+        "genre": "Hip-Hop",
+        "location": "Compton, CA",
+        "imageURL": "https://tinyurl.com/5e7kcc5a"
+    },
+    {
+        "artistID": 3,
+        "artistname": "Adele",
+        "genre": "Pop",
+        "location": "London, UK",
+        "imageURL": "https://example.com/adele.jpg"
+    },
+    {
+        "artistID": 4,
+        "artistname": "Ed Sheeran",
+        "genre": "Pop",
+        "location": "Suffolk, UK",
+        "imageURL": "https://tinyurl.com/yesanwy8"
+    },
+    {
+        "artistID": 5,
+        "artistname": "Drake",
+        "genre": "Hip-Hop",
+        "location": "Toronto, ON",
+        "imageURL": "https://tinyurl.com/3f4nzn7z"
+    }
+]
