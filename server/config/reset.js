@@ -3,6 +3,7 @@ import './dotenv.js'
 import { fileURLToPath } from 'url'
 import path, { dirname } from 'path'
 import fs from 'fs'
+import { create } from 'domain'
 
 const currentPath = fileURLToPath(import.meta.url)
 
@@ -50,5 +51,42 @@ const seedArtistsTable = async () => {
 
 seedArtistsTable()
 
-const creatTracksTable = async () => {
+const createTracksTable = async () => {
+    const createTracksTableQuery = `
+    CREATE TABLE IF NOT EXISTS tracks (
+        trackID SERIAL PRIMARY KEY,
+        title VARCHAR(50),
+        FOREIGNKEY(releaseID) REFERENCES releases(releaseID)
+    );
+    `
+    try {
+        const res = await pool.query(createTracksTableQuery)
+        console.log('🎵 Tracks table created successfully!')
+    } catch (error) {
+        console.error('⚠️ error creating tracks table', error)
+    }
 }
+
+createTracksTable()
+
+const createReleasesTable = async () => {
+    const createReleasesTableQuery = `
+    CREATE TABLE IF NOT EXISTS releases (
+        releaseID SERIAL PRIMARY KEY,
+        title VARCHAR(50),
+        imageURL VARCHAR(100),
+        releasedate DATE,
+        price DECIMAL(19,2),
+        FOREIGN KEY (artistID) REFERENCES artists(artistID) ON UPDATE CASCADE,
+        description VARCHAR(50)
+    );
+    `
+    try {
+        const res = await pool.query(createReleasesTableQuery)
+        console.log('🎵 Releases table created successfully!')
+    } catch (error) {
+        console.error('⚠️ error creating releases table', error)
+    }
+}
+
+createReleasesTable()
