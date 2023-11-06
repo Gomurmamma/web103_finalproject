@@ -75,10 +75,10 @@ const createReleasesTable = async () => {
         releaseID SERIAL PRIMARY KEY,
         title VARCHAR(50),
         imageURL VARCHAR(100),
+        description VARCHAR(50),
         releasedate DATE,
         price DECIMAL(19,2),
-        FOREIGN KEY (artistID) REFERENCES artists(artistID) ON UPDATE CASCADE,
-        description VARCHAR(50)
+        FOREIGN KEY (artistID) REFERENCES artists(artistID) ON UPDATE CASCADE
     );
     `
     try {
@@ -90,3 +90,23 @@ const createReleasesTable = async () => {
 }
 
 createReleasesTable()
+
+const createCustomersTable = async () => {
+    const createCustomersTableQuery = `
+    CREATE TABLE IF NOT EXISTS customers (
+        customerID SERIAL PRIMARY KEY,
+        email VARCHAR(255),
+        cystomername VARCHAR(50),
+        password VARCHAR(50),
+        imageURL VARCHAR(100)
+    );
+    `
+    try {
+        const res = await pool.query(createCustomersTableQuery)
+        console.log('🎵 Customers table created successfully!')
+    } catch (error) {
+        console.error('⚠️ error creating customers table', error)
+    }
+}
+
+createCustomersTable()
