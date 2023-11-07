@@ -1,26 +1,26 @@
 import { pool } from '../config/database.js'
 
-const createArtist = async (req, res) => {
+const createOrder = async (req, res) => {
     try {
-        const { artistname, genre, location, imageURL } = req.body
+        const { customerID, orderDate, totalPrice, salesTax } = req.body
         const results = await pool.query(
-            `INSERT INTO artists (artistname, genre, location, imageURL)
+            `INSERT INTO orders (customerID, orderDate, totalPrice, salesTax)
             VALUES ($1, $2, $3, $4)
             RETURNING *`,
-            [artistname, genre, location, imageURL]
+            [customerID, orderDate, totalPrice, salesTax]
         )
         res.status(201).json(results.rows[0])
     }
     catch (error) {
         res.status(409).json({ error: error.message})
-        console.log('Unable to create artist')
+        console.log('Unable to create order')
         console.log('Error:', error.message)
     }
 }
 
-const getArtists = async (req, res) => {
+const getOrders = async (req, res) => {
     try{
-        const results = await pool.query('SELECT * FROM artists ORDER BY artistID ASC')
+        const results = await pool.query('SELECT * FROM orders ORDER BY orderID ASC')
         res.status(200).json(results.rows)
     }
     catch(error){
@@ -28,56 +28,56 @@ const getArtists = async (req, res) => {
     }
 }
 
-const getArtist = async (req, res) => {
+const getOrder = async (req, res) => {
     try{
         const id = parseInt(req.params.id)
-        const results = await pool.query('SELECT * FROM artists WHERE artistID = $1', [id])
+        const results = await pool.query('SELECT * FROM orders WHERE orderID = $1', [id])
         res.status(200).json(results.rows[0])
     }
     catch(error){
         res.status(409).json({ error: error.message})
-        console.log('Unable to get artist')
+        console.log('Unable to get order')
         console.log('Error:', error.message)
     }
 }
 
-const updateArtist = async (req, res) => {
+const updateOrder = async (req, res) => {
     try{
         const id = parseInt(req.params.id)
-        const { artistname, genre, location, imageURL } = req.body
+        const { customerID, orderDate, totalPrice, salesTax } = req.body
         const results = await pool.query(
-            `UPDATE artists
-            SET artistname = $1, genre = $2, location = $3, imageURL = $4
-            WHERE artistID = $5
+            `UPDATE orders
+            SET customerID = $1, orderDate = $2, totalPrice = $3, salesTax = $4
+            WHERE orderID = $5
             RETURNING *`,
-            [artistname, genre, location, imageURL, id]
+            [customerID, orderDate, totalPrice, salesTax, id]
         )
         res.status(200).json(results.rows[0])
     }
     catch(error){
         res.status(409).json({ error: error.message})
-        console.log('Unable to update artist')
+        console.log('Unable to update order')
         console.log('Error:', error.message)
     }
 }
 
-const deleteArtist = async (req, res) => {
+const deleteOrder = async (req, res) => {
     try {
         const id = parseInt(req.params.id)
-        const results = await pool.query('DELETE FROM artists WHERE artistID = $1 RETURNING *', [id])
+        const results = await pool.query('DELETE FROM orders WHERE orderID = $1 RETURNING *', [id])
         res.status(200).json(results.rows[0])
     }
     catch(error){
         res.status(409).json({ error: error.message})
-        console.log('Unable to delete artist')
+        console.log('Unable to delete order')
         console.log('Error:', error.message)
     }
 }
 
 export default {
-    createArtist,
-    getArtists,
-    getArtist,
-    updateArtist,
-    deleteArtist
+    createOrder,
+    getOrders,
+    getOrder,
+    updateOrder,
+    deleteOrder
 }
