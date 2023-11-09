@@ -36,6 +36,13 @@ function App() {
         </nav>
       </header>
       <main>{element}</main>
+      <footer>
+        <ul>
+          <li>privacy</li>
+          <li>terms & conditions</li>
+          <li>&copy; 2023</li>
+        </ul>
+      </footer>
     </>
   );
 }
