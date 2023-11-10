@@ -1,15 +1,14 @@
-
-const fetchFanById = async ({id}) => {
+const fetchReleasesByCustomerID = async ({id}) => {
     try{
-        const response = await fetch(`http://localhost:3001/fans/{id}`);
-        const eventsData = await response.json();
-        return eventsData;
+        const response = await fetch(`http://localhost:3001/releases/customer${id}`);
+        const releasesData = await response.json();
+        return releasesData;
     }
     catch(error){
-        console.log("There was an error fetching the Events data.")
+        console.log("There was an error fetching the Customer's Releases data.")
     }
 }
 
 export default {
-    fetchFanById,
+    fetchReleasesByCustomerID,
 }
