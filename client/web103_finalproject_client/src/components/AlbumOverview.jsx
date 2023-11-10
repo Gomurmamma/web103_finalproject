@@ -7,11 +7,11 @@ const AlbumOverview = (props) => {
     title: props.title,
     imageURL: props.imageURL,
     artistID: props.artistID,
-    artistName: props.artistName
+    artistName: props.artistName,
   });
 
   useEffect(() => {
-    setGift({
+    setAlbum({
       releaseID: props.releaseID,
       title: props.title,
       imageURL: props.imageURL,
@@ -21,14 +21,17 @@ const AlbumOverview = (props) => {
 
   return (
     <figure>
-      <img src={imageURL} alt={title + `cover art`}></img>
+      <Link to={`/releases/` + album.releaseID}>
+        <img src={album.imageURL} alt={album.title + `cover art`}></img>
+      </Link>
+
       <figcaption>
         <ul>
           <li>
-            <Link to={`/releases/` + releaseID}>{title}</Link>
+            <Link to={`/releases/` + album.releaseID}>{album.title}</Link>
           </li>
           <li>
-            <Link to={`/artists/` + artistID}>{artistName}</Link>
+            <Link to={`/artists/` + album.artistID}>{album.artistName}</Link>
           </li>
         </ul>
       </figcaption>
