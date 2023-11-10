@@ -1,6 +1,6 @@
 const fetchReleasesByCustomerID = async ({id}) => {
     try{
-        const response = await fetch(`http://localhost:3001/releases/customer${id}`);
+        const response = await fetch(`http://localhost:5001/releases/customer${id}`);
         const releasesData = await response.json();
         return releasesData;
     }

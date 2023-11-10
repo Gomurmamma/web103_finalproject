@@ -1,6 +1,6 @@
 const fetchFanById = async ({id}) => {
     try{
-        const response = await fetch(`http://localhost:3001/fans/${id}`);
+        const response = await fetch(`http://localhost:5001/fans/${id}`);
         const fanData = await response.json();
         return fanData;
     }
