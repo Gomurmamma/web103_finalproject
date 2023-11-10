@@ -7,6 +7,7 @@ import "./App.css";
 import PageNotFound from "./pages/PageNotFound";
 import LandingPage from "./pages/LandingPage";
 import { Link } from "react-router-dom";
+import FanPage from "./pages/FanPage";
 
 function App() {
   // Sets up routes
@@ -19,6 +20,10 @@ function App() {
       path: "/*",
       element: <PageNotFound />,
     },
+    {
+      path: "/fans/:id",
+      element: <FanPage/>
+    }
   ]);
 
   return (

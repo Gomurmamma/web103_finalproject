@@ -19,7 +19,6 @@ const FanPage = ({fanData, customerReleases}) => {
             <AlbumOverview key={index} props={release}/>
           ))
         }
-        
       </article>
     </section>
   );
