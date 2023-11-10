@@ -7,6 +7,7 @@ import "./App.css";
 import PageNotFound from "./pages/PageNotFound";
 import LandingPage from "./pages/LandingPage";
 import { Link } from "react-router-dom";
+import FanPage from "./pages/FanPage";
 
 function App() {
   // Sets up routes
@@ -19,6 +20,10 @@ function App() {
       path: "/*",
       element: <PageNotFound />,
     },
+    {
+      path: "/fans/:id",
+      element: <FanPage/>
+    }
   ]);
 
   return (
@@ -36,6 +41,13 @@ function App() {
         </nav>
       </header>
       <main>{element}</main>
+      <footer>
+        <ul>
+          <li>privacy</li>
+          <li>terms & conditions</li>
+          <li>&copy; 2023</li>
+        </ul>
+      </footer>
     </>
   );
 }
