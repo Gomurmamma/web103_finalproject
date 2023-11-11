@@ -74,19 +74,22 @@ const deleteRelease = async (req, res) => {
     }
 }
 
-const getAllReleasesOfArtist = async (artistid) => {
+const getAllReleasesOfArtist = async (req, res) => {
     try{
+        const artistid = parseInt(req.params.id)
         const results = await pool.query('SELECT * FROM releases WHERE artistid = $1', [artistid])
-        return results.rows
+        res.status(200).json(results.rows)
     }
     catch(error){
+        res.status(409).json({ error: error.message})
         console.log('Unable to get releases of artist with id ' + artistid)
         console.log('Error:', error.message)
     }
 }
 
-const getAllReleasesOfCustomer = async (customerid) => {
+const getAllReleasesOfCustomer = async (req, res) => {
     try{
+        const customerid = parseInt(req.params.id)
         const results = await pool.query(
             `SELECT * 
             FROM releases AS R
@@ -94,36 +97,28 @@ const getAllReleasesOfCustomer = async (customerid) => {
             OUTER JOIN orders as O ON RO.orderid = O.orderid
             OUTER JOIN customers AS C ON O.customerid = C.customerid
             WHERE C.customerid = $1`, [customerid])
-        return results.rows
+        res.status(200).json(results.rows)   
     }
     catch(error){
+        res.status(409).json({ error: error.message})
         console.log('Unable to get releases of customer with id ' + customerid)
         console.log('Error:', error.message)
     }
 }
 
-const getAllReleasesOfOrder = async (orderid) => {
+const getAllReleasesOfOrder = async (req, res) => {
     try{
+        const orderid = parseInt(req.params.id)
         const results = await pool.query(
             `SELECT * 
             FROM releases AS R
             INNER JOIN releaseorders AS RO ON R.releaseid = RO.releaseid
             WHERE RO.orderid = $1`, [orderid])
-        return results.rows
+        res.status(200).json(results.rows)   
     }
     catch(error){
+        res.status(409).json({ error: error.message})
         console.log('Unable to get releases of customer with id ' + customerid)
-        console.log('Error:', error.message)
-    }
-}
-
-const getReleaseById = async (releaseid) => {
-    try{
-        const results = await pool.query('SELECT * FROM releases WHERE releaseid = $1', [releaseid])
-        return results.rows
-    }
-    catch(error){
-        console.log('Unable to get releases of artist with id ' + releaseid)
         console.log('Error:', error.message)
     }
 }
@@ -136,6 +131,5 @@ export default {
     deleteRelease,
     getAllReleasesOfArtist,
     getAllReleasesOfCustomer,
-    getAllReleasesOfOrder,
-    getReleaseById
+    getAllReleasesOfOrder
 }
