@@ -1,5 +1,5 @@
 import React from "react";
-// NEED TO DEFINE ARTIST OVERVIEW COMPONENT
+import ArtistOverview from "./ArtistOverview";
 
 function SearchResults({ artists }) {
   return (
