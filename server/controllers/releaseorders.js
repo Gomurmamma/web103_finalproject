@@ -2,12 +2,12 @@ import { pool } from '../config/database.js'
 
 const createReleaseOrder = async (req, res) => {
     try {
-        const { releaseID, orderID, purchasePrice } = req.body
+        const { releaseid, orderid, purchasePrice } = req.body
         const results = await pool.query(
-            `INSERT INTO releaseOrders (releaseID, orderID, purchasePrice)
+            `INSERT INTO releaseOrders (releaseid, orderid, purchasePrice)
             VALUES ($1, $2, $3)
             RETURNING *`,
-            [releaseID, orderID, purchasePrice]
+            [releaseid, orderid, purchasePrice]
         )
         res.status(201).json(results.rows[0])
     }
@@ -20,7 +20,7 @@ const createReleaseOrder = async (req, res) => {
 
 const getReleaseOrders = async (req, res) => {
     try{
-        const results = await pool.query('SELECT * FROM releaseOrders ORDER BY releaseOrderID ASC')
+        const results = await pool.query('SELECT * FROM releaseOrders ORDER BY releaseOrderid ASC')
         res.status(200).json(results.rows)
     }
     catch(error){
@@ -31,7 +31,7 @@ const getReleaseOrders = async (req, res) => {
 const getReleaseOrder = async (req, res) => {
     try{
         const id = parseInt(req.params.id)
-        const results = await pool.query('SELECT * FROM releaseOrders WHERE releaseOrderID = $1', [id])
+        const results = await pool.query('SELECT * FROM releaseOrders WHERE releaseOrderid = $1', [id])
         res.status(200).json(results.rows[0])
     }
     catch(error){
@@ -44,13 +44,13 @@ const getReleaseOrder = async (req, res) => {
 const updateReleaseOrder = async (req, res) => {
     try{
         const id = parseInt(req.params.id)
-        const { releaseID, orderID, purchasePrice } = req.body
+        const { releaseid, orderid, purchasePrice } = req.body
         const results = await pool.query(
             `UPDATE releaseOrders
-            SET releaseID = $1, orderID = $2, purchasePrice = $3
-            WHERE releaseOrderID = $4
+            SET releaseid = $1, orderid = $2, purchasePrice = $3
+            WHERE releaseOrderid = $4
             RETURNING *`,
-            [releaseID, orderID, purchasePrice, id]
+            [releaseid, orderid, purchasePrice, id]
         )
         res.status(200).json(results.rows[0])
     }
@@ -64,7 +64,7 @@ const updateReleaseOrder = async (req, res) => {
 const deleteReleaseOrder = async (req, res) => {
     try {
         const id = parseInt(req.params.id)
-        const results = await pool.query('DELETE FROM releaseOrders WHERE releaseOrderID = $1 RETURNING *', [id])
+        const results = await pool.query('DELETE FROM releaseOrders WHERE releaseOrderid = $1 RETURNING *', [id])
         res.status(200).json(results.rows[0])
     }
     catch(error){

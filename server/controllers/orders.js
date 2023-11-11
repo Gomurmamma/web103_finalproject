@@ -2,12 +2,12 @@ import { pool } from '../config/database.js'
 
 const createOrder = async (req, res) => {
     try {
-        const { customerID, orderDate, totalPrice, salesTax } = req.body
+        const { customerid, orderDate, totalPrice, salesTax } = req.body
         const results = await pool.query(
-            `INSERT INTO orders (customerID, orderDate, totalPrice, salesTax)
+            `INSERT INTO orders (customerid, orderDate, totalPrice, salesTax)
             VALUES ($1, $2, $3, $4)
             RETURNING *`,
-            [customerID, orderDate, totalPrice, salesTax]
+            [customerid, orderDate, totalPrice, salesTax]
         )
         res.status(201).json(results.rows[0])
     }
@@ -20,7 +20,7 @@ const createOrder = async (req, res) => {
 
 const getOrders = async (req, res) => {
     try{
-        const results = await pool.query('SELECT * FROM orders ORDER BY orderID ASC')
+        const results = await pool.query('SELECT * FROM orders ORDER BY orderid ASC')
         res.status(200).json(results.rows)
     }
     catch(error){
@@ -31,7 +31,7 @@ const getOrders = async (req, res) => {
 const getOrder = async (req, res) => {
     try{
         const id = parseInt(req.params.id)
-        const results = await pool.query('SELECT * FROM orders WHERE orderID = $1', [id])
+        const results = await pool.query('SELECT * FROM orders WHERE orderid = $1', [id])
         res.status(200).json(results.rows[0])
     }
     catch(error){
@@ -44,13 +44,13 @@ const getOrder = async (req, res) => {
 const updateOrder = async (req, res) => {
     try{
         const id = parseInt(req.params.id)
-        const { customerID, orderDate, totalPrice, salesTax } = req.body
+        const { customerid, orderDate, totalPrice, salesTax } = req.body
         const results = await pool.query(
             `UPDATE orders
-            SET customerID = $1, orderDate = $2, totalPrice = $3, salesTax = $4
-            WHERE orderID = $5
+            SET customerid = $1, orderDate = $2, totalPrice = $3, salesTax = $4
+            WHERE orderid = $5
             RETURNING *`,
-            [customerID, orderDate, totalPrice, salesTax, id]
+            [customerid, orderDate, totalPrice, salesTax, id]
         )
         res.status(200).json(results.rows[0])
     }
@@ -64,7 +64,7 @@ const updateOrder = async (req, res) => {
 const deleteOrder = async (req, res) => {
     try {
         const id = parseInt(req.params.id)
-        const results = await pool.query('DELETE FROM orders WHERE orderID = $1 RETURNING *', [id])
+        const results = await pool.query('DELETE FROM orders WHERE orderid = $1 RETURNING *', [id])
         res.status(200).json(results.rows[0])
     }
     catch(error){

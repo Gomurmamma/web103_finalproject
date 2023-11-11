@@ -2,12 +2,12 @@ import { pool } from '../config/database.js'
 
 const createArtist = async (req, res) => {
     try {
-        const { artistname, genre, location, imageURL } = req.body
+        const { artistname, genre, location, imageurl } = req.body
         const results = await pool.query(
-            `INSERT INTO artists (artistname, genre, location, imageURL)
+            `INSERT INTO artists (artistname, genre, location, imageurl)
             VALUES ($1, $2, $3, $4)
             RETURNING *`,
-            [artistname, genre, location, imageURL]
+            [artistname, genre, location, imageurl]
         )
         res.status(201).json(results.rows[0])
     }
@@ -20,7 +20,7 @@ const createArtist = async (req, res) => {
 
 const getAllArtists = async (req, res) => {
     try{
-        const results = await pool.query('SELECT * FROM artists ORDER BY artistID ASC')
+        const results = await pool.query('SELECT * FROM artists ORDER BY artistid ASC')
         res.status(200).json(results.rows)
     }
     catch(error){
@@ -31,7 +31,7 @@ const getAllArtists = async (req, res) => {
 const getArtist = async (req, res) => {
     try{
         const id = parseInt(req.params.id)
-        const results = await pool.query('SELECT * FROM artists WHERE artistID = $1', [id])
+        const results = await pool.query('SELECT * FROM artists WHERE artistid = $1', [id])
         res.status(200).json(results.rows[0])
     }
     catch(error){
@@ -44,13 +44,13 @@ const getArtist = async (req, res) => {
 const updateArtist = async (req, res) => {
     try{
         const id = parseInt(req.params.id)
-        const { artistname, genre, location, imageURL } = req.body
+        const { artistname, genre, location, imageurl } = req.body
         const results = await pool.query(
             `UPDATE artists
-            SET artistname = $1, genre = $2, location = $3, imageURL = $4
-            WHERE artistID = $5
+            SET artistname = $1, genre = $2, location = $3, imageurl = $4
+            WHERE artistid = $5
             RETURNING *`,
-            [artistname, genre, location, imageURL, id]
+            [artistname, genre, location, imageurl, id]
         )
         res.status(200).json(results.rows[0])
     }
@@ -64,7 +64,7 @@ const updateArtist = async (req, res) => {
 const deleteArtist = async (req, res) => {
     try {
         const id = parseInt(req.params.id)
-        const results = await pool.query('DELETE FROM artists WHERE artistID = $1 RETURNING *', [id])
+        const results = await pool.query('DELETE FROM artists WHERE artistid = $1 RETURNING *', [id])
         res.status(200).json(results.rows[0])
     }
     catch(error){
@@ -74,13 +74,13 @@ const deleteArtist = async (req, res) => {
     }
 }
 
-const getArtistById = async (artistID) => {
+const getArtistById = async (artistid) => {
     try{
-        const results = await pool.query('SELECT * FROM artists WHERE artistID = $1', [artistID])
+        const results = await pool.query('SELECT * FROM artists WHERE artistid = $1', [artistid])
         return results.rows
     }
     catch(error){
-        console.log('Unable to get artist with ID ' + artistID)
+        console.log('Unable to get artist with id ' + artistid)
         console.log('Error:', error.message)
     }
 }

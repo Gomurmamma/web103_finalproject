@@ -2,12 +2,12 @@ import { pool } from '../config/database.js'
 
 const createRelease = async (req, res) => {
     try {
-        const { title, imageURL, releaseDate, price, artistID, description } = req.body
+        const { title, imageurl, releaseDate, price, artistid, description } = req.body
         const results = await pool.query(
-            `INSERT INTO releases (title, imageURL, releaseDate, price, artistID, description)
+            `INSERT INTO releases (title, imageurl, releaseDate, price, artistid, description)
             VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING *`,
-            [title, imageURL, releaseDate, price, artistID, description]
+            [title, imageurl, releaseDate, price, artistid, description]
         )
         res.status(201).json(results.rows[0])
     }
@@ -20,7 +20,7 @@ const createRelease = async (req, res) => {
 
 const getAllReleases = async (req, res) => {
     try{
-        const results = await pool.query('SELECT * FROM releases ORDER BY releaseID ASC');
+        const results = await pool.query('SELECT * FROM releases ORDER BY releaseid ASC');
         res.status(200).json(results.rows);
     }
     catch(error){
@@ -31,7 +31,7 @@ const getAllReleases = async (req, res) => {
 const getRelease = async (req, res) => {
     try{
         const id = parseInt(req.params.id)
-        const results = await pool.query('SELECT * FROM releases WHERE releaseID = $1', [id])
+        const results = await pool.query('SELECT * FROM releases WHERE releaseid = $1', [id])
         res.status(200).json(results.rows[0])
     }
     catch(error){
@@ -44,13 +44,13 @@ const getRelease = async (req, res) => {
 const updateRelease = async (req, res) => {
     try{
         const id = parseInt(req.params.id)
-        const { title, imageURL, releaseDate, price, artistID, description } = req.body
+        const { title, imageurl, releaseDate, price, artistid, description } = req.body
         const results = await pool.query(
             `UPDATE releases
-            SET title = $1, imageURL = $2, releaseDate = $3, price = $4, artistID = $5, description = $6
-            WHERE releaseID = $7
+            SET title = $1, imageurl = $2, releaseDate = $3, price = $4, artistid = $5, description = $6
+            WHERE releaseid = $7
             RETURNING *`,
-            [title, imageURL, releaseDate, price, artistID, description, id]
+            [title, imageurl, releaseDate, price, artistid, description, id]
         )
         res.status(200).json(results.rows[0])
     }
@@ -64,7 +64,7 @@ const updateRelease = async (req, res) => {
 const deleteRelease = async (req, res) => {
     try {
         const id = parseInt(req.params.id)
-        const results = await pool.query('DELETE FROM releases WHERE releaseID = $1 RETURNING *', [id])
+        const results = await pool.query('DELETE FROM releases WHERE releaseid = $1 RETURNING *', [id])
         res.status(200).json(results.rows[0])
     }
     catch(error){
@@ -74,56 +74,56 @@ const deleteRelease = async (req, res) => {
     }
 }
 
-const getAllReleasesOfArtist = async (artistID) => {
+const getAllReleasesOfArtist = async (artistid) => {
     try{
-        const results = await pool.query('SELECT * FROM releases WHERE artistID = $1', [artistID])
+        const results = await pool.query('SELECT * FROM releases WHERE artistid = $1', [artistid])
         return results.rows
     }
     catch(error){
-        console.log('Unable to get releases of artist with ID ' + artistID)
+        console.log('Unable to get releases of artist with id ' + artistid)
         console.log('Error:', error.message)
     }
 }
 
-const getAllReleasesOfCustomer = async (customerID) => {
+const getAllReleasesOfCustomer = async (customerid) => {
     try{
         const results = await pool.query(
             `SELECT * 
             FROM releases AS R
-            INNER JOIN releaseorders AS RO ON R.releaseID = RO.releaseID
-            OUTER JOIN orders as O ON RO.orderID = O.orderID
-            OUTER JOIN customers AS C ON O.customerID = C.customerID
-            WHERE C.customerID = $1`, [customerID])
+            INNER JOIN releaseorders AS RO ON R.releaseid = RO.releaseid
+            OUTER JOIN orders as O ON RO.orderid = O.orderid
+            OUTER JOIN customers AS C ON O.customerid = C.customerid
+            WHERE C.customerid = $1`, [customerid])
         return results.rows
     }
     catch(error){
-        console.log('Unable to get releases of customer with ID ' + customerID)
+        console.log('Unable to get releases of customer with id ' + customerid)
         console.log('Error:', error.message)
     }
 }
 
-const getAllReleasesOfOrder = async (orderID) => {
+const getAllReleasesOfOrder = async (orderid) => {
     try{
         const results = await pool.query(
             `SELECT * 
             FROM releases AS R
-            INNER JOIN releaseorders AS RO ON R.releaseID = RO.releaseID
-            WHERE RO.orderID = $1`, [orderID])
+            INNER JOIN releaseorders AS RO ON R.releaseid = RO.releaseid
+            WHERE RO.orderid = $1`, [orderid])
         return results.rows
     }
     catch(error){
-        console.log('Unable to get releases of customer with ID ' + customerID)
+        console.log('Unable to get releases of customer with id ' + customerid)
         console.log('Error:', error.message)
     }
 }
 
-const getReleaseById = async (releaseID) => {
+const getReleaseById = async (releaseid) => {
     try{
-        const results = await pool.query('SELECT * FROM releases WHERE releaseID = $1', [releaseID])
+        const results = await pool.query('SELECT * FROM releases WHERE releaseid = $1', [releaseid])
         return results.rows
     }
     catch(error){
-        console.log('Unable to get releases of artist with ID ' + releaseID)
+        console.log('Unable to get releases of artist with id ' + releaseid)
         console.log('Error:', error.message)
     }
 }
