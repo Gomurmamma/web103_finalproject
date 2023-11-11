@@ -74,22 +74,10 @@ const deleteArtist = async (req, res) => {
     }
 }
 
-const getArtistById = async (artistid) => {
-    try{
-        const results = await pool.query('SELECT * FROM artists WHERE artistid = $1', [artistid])
-        return results.rows
-    }
-    catch(error){
-        console.log('Unable to get artist with id ' + artistid)
-        console.log('Error:', error.message)
-    }
-}
-
 export default {
     createArtist,
     getAllArtists,
     getArtist,
     updateArtist,
-    deleteArtist,
-    getArtistById
+    deleteArtist
 }

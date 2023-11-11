@@ -74,22 +74,25 @@ const deleteTrack = async (req, res) => {
     }
 }
 
-const getAllTracksOfArtist = async (artistid) => {
+const getAllTracksOfArtist = async (req, res) => {
     try {
+        const artistid = parseInt(req.params.id)
         const results = await pool.query(
             `SELECT * FROM tracks AS T
             INNER JOIN Releases AS R ON R.releaseid = T.releaseid
             WHERE R.artistid = $1 ORDER BY releaseid ASC`, [artistid]);
-        return results.rows;
+        res.status(200).json(results.rows[0])
     }
     catch(error){
+        res.status(409).json({ error: error.message})
         console.log('Unable to retrieve tracks of artist with id ' + artistid)
         console.log('Error:', error.message)
     }
 }
 
-const getAllTracksOfRelease = async (releaseid) => {
+const getAllTracksOfRelease = async (req, res) => {
     try {
+        const releaseid = parseInt(req.params.id)
         const results = await pool.query(
             `SELECT * FROM tracks AS T
             INNER JOIN Releases AS R ON R.releaseid = T.releaseid
@@ -97,6 +100,7 @@ const getAllTracksOfRelease = async (releaseid) => {
         return results.rows;
     }
     catch(error){
+        res.status(409).json({ error: error.message})
         console.log('Unable to retrieve tracks of release with id ' + releaseid)
         console.log('Error:', error.message)
     }

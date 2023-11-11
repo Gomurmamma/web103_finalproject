@@ -7,17 +7,10 @@ const router = express.Router()
 
 router.get('/', ArtistsController.getAllArtists)
 
-router.get('/:id', async (req, res) => {
-    try {
-        const artist = await ArtistsController.getArtistById(req.params.id) // retrieve single artist by ID
-        const tracks = await TracksController.getAllTracksOfArtist(req.params.id) // get all tracks released by the artist
-        const releases = await ReleasesController.getAllReleasesOfArtist(req.params.id) // get all releases by the artist
-        res.render('artist', { artist, tracks, releases})
-    } catch (err) {
-        console.error(err)
-        res.status(500).json({ message: 'Server Error' })
-    }
-})
+//Group of routes for a specific artist and their artist page
+router.get('/:id', ArtistsController.getArtist)
+router.get('/:id/tracks', TracksController.getAllTracksOfArtist)
+router.get('/:id/releases', ReleasesController.getAllReleasesOfArtist)
 
 router.post('/', ArtistsController.createArtist)
 
