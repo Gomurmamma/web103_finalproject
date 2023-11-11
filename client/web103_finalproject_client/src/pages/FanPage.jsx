@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import AlbumOverview from "../components/AlbumOverview";
 import { useParams } from "react-router-dom";
+import releasesServices from "../services/ReleaseAPI";
 
 const FanPage = ({}) => {
   const { id } = useParams();

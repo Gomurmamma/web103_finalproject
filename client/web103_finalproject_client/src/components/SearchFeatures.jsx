@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import SearchResults from "./SearchResults";
 
-const SearchFeatures = ({ props }) => {
+const SearchFeatures = ({ artists }) => {
   const [searchField, setSearchField] = useState("");
-  const [submittedSearchField, setSubmittedSearchField] = "";
+  const [submittedSearchField, setSubmittedSearchField] = useState("");
   const [genreFilter, setGenreFilter] = useState("");
 
-  const [artistsResults, setArtistsResults] = useState([...props.artistsData]);
-  const [filteredArtists, setFilteredArtists] = useState([...props.artistsData]);
+  const [artistsResults, setArtistsResults] = useState([...artists.artistsData]);
+  const [filteredArtists, setFilteredArtists] = useState([...artists.artistsData]);
 
   // Filter artists against the search text
   const filterByText = (data) => {
