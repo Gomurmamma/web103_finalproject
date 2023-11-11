@@ -20,37 +20,55 @@ const createArtistsTable = async () => {
         location VARCHAR(50),
         imageURL VARCHAR(100)
     );
-    `
+    `;
+
     try {
-        const res = await pool.query(createArtistsTableQuery)
-        console.log('🎵 Artists table created successfully!')
+        const res = await pool.query(createArtistsTableQuery);
+        console.log('🎵 Artists table created successfully!');
     } catch (error) {
-        console.error('⚠️ error creating artists table', error)
+        console.error('⚠️ error creating artists table', error);
     }
-}
+};
+
+createArtistsTable();
 
 const seedArtistsTable = async () => {
-    await createArtistsTable()
+    const checkArtistsTableQuery = `
+    SELECT COUNT(*) FROM artists;
+    `;
 
-    artistsData.forEach((artist) => {
-        const insertArtistQuery = {
-            text: `
-            INSERT INTO artists (artistname, genre, location, imageURL)
-            VALUES ($1, $2, $3, $4)
-            `
+    try {
+        const res = await pool.query(checkArtistsTableQuery);
+        const count = parseInt(res.rows[0].count, 10);
+
+        if (count > 0) {
+            console.log('🎵 Artists table already has data, skipping seeding.');
+            return;
         }
-        const values = [artist.artistname, artist.genre, artist.location, artist.imageURL]
+    } catch (error) {
+        console.error('⚠️ error checking artists table', error);
+        return;
+    }
+
+    artistsData.forEach(artist => {
+        const insertArtistQuery = `
+        INSERT INTO artists (artistname, genre, location, imageURL)
+        VALUES ($1, $2, $3, $4);
+        `;
+
+        const values = [artist.artistname, artist.genre, artist.location, artist.imageURL];
+
         pool.query(insertArtistQuery, values, (err, res) => {
             if (err) {
-                console.error('⚠️ error inserting artist', err)
-                return
+                console.error('⚠️ error inserting artist', err);
+                return;
             }
-            console.log(`✅ ${artist.artistname} inserted successfully!`)
-        })
-    })
-}
+            console.log(`✅ ${artist.artistname} inserted successfully!`);
+        });
+    });
+};
 
-seedArtistsTable()
+seedArtistsTable();
 
 const createReleasesTable = async () => {
     const createReleasesTableQuery = `
