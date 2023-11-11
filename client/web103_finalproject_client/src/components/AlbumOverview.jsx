@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 
 const AlbumOverview = (props) => {
   const [album, setAlbum] = useState({
-    releaseID: props.releaseID,
-    title: props.title,
-    imageURL: props.imageURL,
-    artistID: props.artistID,
-    artistName: props.artistName,
+    releaseID: "",
+    title: "",
+    imageURL: "",
+    artistID: "",
+    artistName: "",
   });
 
   useEffect(() => {

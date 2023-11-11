@@ -8,6 +8,7 @@ import PageNotFound from "./pages/PageNotFound";
 import LandingPage from "./pages/LandingPage";
 import { Link } from "react-router-dom";
 import FanPage from "./pages/FanPage";
+import ArtistsPage from "./pages/ArtistsPage";
 
 function App() {
   // Sets up routes
@@ -23,6 +24,10 @@ function App() {
     {
       path: "/fans/:id",
       element: <FanPage/>
+    },
+    {
+      path: "/artists",
+      element: <ArtistsPage/>
     }
   ]);
 
@@ -36,6 +41,9 @@ function App() {
           <ul>
             <li>
               <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/artists">Artists</Link>
             </li>
           </ul>
         </nav>
