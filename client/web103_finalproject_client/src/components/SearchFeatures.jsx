@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import SearchResults
+import SearchResults from "./SearchResults";
 
 const SearchFeatures = ({ props }) => {
   const [searchField, setSearchField] = useState("");
@@ -7,7 +7,7 @@ const SearchFeatures = ({ props }) => {
   const [genreFilter, setGenreFilter] = useState("");
 
   const [artistsResults, setArtistsResults] = useState([...props.artistsData]);
-  const [filteredArtists, setFilteredArtists] = useState([]);
+  const [filteredArtists, setFilteredArtists] = useState([...props.artistsData]);
 
   // Filter artists against the search text
   const filterByText = (data) => {
@@ -101,6 +101,7 @@ const SearchFeatures = ({ props }) => {
             </select>
         </fieldset>
       </form>
+      <SearchResults artists={filteredArtists} />
     </section>
   );
 };
