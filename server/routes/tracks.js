@@ -3,7 +3,7 @@ import TracksController from '../controllers/tracks.js'
 
 const router = express.Router()
 
-router.get('/', TracksController.getTracks)
+router.get('/', TracksController.getAllTracks)
 
 router.get('/:id', TracksController.getTrack)
 

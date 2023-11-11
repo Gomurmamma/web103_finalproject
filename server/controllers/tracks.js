@@ -18,10 +18,10 @@ const createTrack = async (req, res) => {
     }
 }
 
-const getTracks = async (req, res) => {
+const getAllTracks = async (req, res) => {
     try{
-        const results = await pool.query('SELECT * FROM tracks ORDER BY trackID ASC')
-        res.status(200).json(results.rows)
+        results = await pool.query('SELECT * FROM tracks ORDER BY trackID ASC');
+        res.status(200).json(results.rows);
     }
     catch(error){
         res.status(409).json({ error: error.message})
@@ -74,10 +74,40 @@ const deleteTrack = async (req, res) => {
     }
 }
 
+const getAllTracksOfArtist = async (artistID) => {
+    try {
+        const results = await pool.query(
+            `SELECT * FROM tracks AS T
+            INNER JOIN Releases AS R ON R.releaseID = T.releaseID
+            WHERE R.artistID = $1 ORDER BY releaseID ASC`, [artistID]);
+        return results.rows;
+    }
+    catch(error){
+        console.log('Unable to retrieve tracks of artist with ID ' + artistID)
+        console.log('Error:', error.message)
+    }
+}
+
+const getAllTracksOfRelease = async (releaseID) => {
+    try {
+        const results = await pool.query(
+            `SELECT * FROM tracks AS T
+            INNER JOIN Releases AS R ON R.releaseID = T.releaseID
+            WHERE R.releaseID = $1`, [releaseID]);
+        return results.rows;
+    }
+    catch(error){
+        console.log('Unable to retrieve tracks of release with ID ' + releaseID)
+        console.log('Error:', error.message)
+    }
+}
+
 export default {
     createTrack,
-    getTracks,
+    getAllTracks,
     getTrack,
     updateTrack,
-    deleteTrack
+    deleteTrack,
+    getAllTracksOfArtist,
+    getAllTracksOfRelease
 }

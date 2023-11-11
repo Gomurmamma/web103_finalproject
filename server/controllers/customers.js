@@ -18,7 +18,7 @@ const createCustomer = async (req, res) => {
     }
 }
 
-const getCustomers = async (req, res) => {
+const getAllCustomers = async (req, res) => {
     try{
         const results = await pool.query('SELECT * FROM customers ORDER BY customerID ASC')
         res.status(200).json(results.rows)
@@ -74,10 +74,40 @@ const deleteCustomer = async (req, res) => {
     }
 }
 
+const getAllCustomersOfRelease = async (releaseID) => {
+    try{
+        const results = await pool.query(
+            `SELECT * 
+            FROM customers AS C
+            INNER JOIN releaseorders AS RO ON RO.customerID = C.customerID
+            INNER JOIN releases AS R ON R.releaseID = RO.releaseID
+            WHERE R.releaseID = $1`, [releaseID])
+        return results.rows
+    }
+    catch(error){
+        console.log('Unable to get releases of customer with ID ' + customerID)
+        console.log('Error:', error.message)
+    }
+}
+
+const getCustomerById = async (customerID) => {
+    try{
+        const results = await pool.query('SELECT * FROM customers WHERE customerID = $1', [customerID])
+        return results.rows
+    }
+    catch(error){
+        console.log('Unable to get customer with ID ' + customerID)
+        console.log('Error:', error.message)
+    }
+}
+
+
 export default {
     createCustomer,
-    getCustomers,
+    getAllCustomers,
     getCustomer,
     updateCustomer,
-    deleteCustomer
+    deleteCustomer,
+    getAllCustomersOfRelease,
+    getCustomerById
 }

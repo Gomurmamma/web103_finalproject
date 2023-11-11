@@ -18,7 +18,7 @@ const createArtist = async (req, res) => {
     }
 }
 
-const getArtists = async (req, res) => {
+const getAllArtists = async (req, res) => {
     try{
         const results = await pool.query('SELECT * FROM artists ORDER BY artistID ASC')
         res.status(200).json(results.rows)
@@ -74,10 +74,22 @@ const deleteArtist = async (req, res) => {
     }
 }
 
+const getArtistById = async (artistID) => {
+    try{
+        const results = await pool.query('SELECT * FROM artists WHERE artistID = $1', [artistID])
+        return results.rows
+    }
+    catch(error){
+        console.log('Unable to get artist with ID ' + artistID)
+        console.log('Error:', error.message)
+    }
+}
+
 export default {
     createArtist,
-    getArtists,
+    getAllArtists,
     getArtist,
     updateArtist,
-    deleteArtist
+    deleteArtist,
+    getArtistById
 }
