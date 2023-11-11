@@ -8,13 +8,25 @@ const SearchFeatures = ({props}) => {
     const [artistsResults, setArtistsResults] = useState([...props.artistsData])
     const [filteredArtists, setFilteredArtists] = useState([]);
 
+    // Filter artists against the search text
+    const filterByText = (data) => {
+
+        if (!searchField || searchField === ""){
+            return data
+        }
+        const filteredArtistBySearch = data.filter(
+            (artist) => artist.artistName.search(searchField) !== -1
+        );
+        return filteredArtistBySearch;
+    }
+
     // Filter artists against the specified genre
-    const filterByGenre = () => {
+    const filterByGenre = (data) => {
         if (!genreFilter || genreFilter === ""){
-            return artistsResults
+            return data
         }
 
-        const filteredArtists = artistsResults.filter(
+        const filteredArtists = data.filter(
             (artist) => artist.genre === genreFilter
         );
         return filteredArtists;
@@ -24,11 +36,27 @@ const SearchFeatures = ({props}) => {
         setGenreFilter(event.target.value);
     };
 
+    const handleArtistSearchUpdate = (event) => {
+        event.preventDefault();
+        setSearchField(event.target.value);
+    }
+
+    // update display if new Search request or filter applied
     useEffect(() => {
-        let filterdData = filterByGenre(artistsResults);
+        // apply any search criteria first
+        let filteredArtists = filterByText(artistsResults);
+
+        // then apply filtering
+        let filterdData = filterByGenre(filteredArtists);
+
+        // final artist results
         setFilteredArtists(filterdData);
+        
     }, [artistsResults, genreFilter]);
-    
+
+
+
+
 }
 
 export default SearchFeatures;
