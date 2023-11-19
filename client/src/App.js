@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import { useRoutes } from 'react-router-dom'
-import ReadTrips from './pages/ReadTrips'
+import ReadArtists from './pages/ReadArtists'
 import CreateTrip from './pages/CreateTrip'
 import EditTrip from './pages/EditTrip'
 import CreateDestination from './pages/CreateDestination';
@@ -17,17 +17,23 @@ const App = () => {
   
   const [trips, setTrips] = useState([]);
   const [destinations, setDestinations] = useState([]);
+  const [artists, setArtists] = useState([]);
 
   useEffect(() => {
-
-
+    const fetchArtists = async () => {
+      const response = await fetch('/api/artists')
+      const data = await response.json()
+      setArtists(data)
+    }
+  
+    fetchArtists()
   }, []);
 
   // Sets up routes
   let element = useRoutes([
     {
       path: "/",
-      element:<ReadTrips data={trips}/>
+      element:<ReadArtists data={artists}/>
     },
     {
       path:"/trip/new",
